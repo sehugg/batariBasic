@@ -1,10 +1,15 @@
 
 SAMPLES=\
+	samples/helloworld.bas.bin \
 	samples/sample.bas.bin \
 	samples/draw.bas.bin \
-	samples/zombie_chase.bas.bin
+	samples/zombie_chase.bas.bin \
 
-all: sources $(SAMPLES)
+TESTS=\
+	tests/empty.bas.bin \
+	tests/longline.bas.bin \
+
+all: sources $(TESTS) $(SAMPLES)
 
 sources:
 	cd source && make
