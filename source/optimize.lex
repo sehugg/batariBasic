@@ -39,5 +39,5 @@ char *mychar;
 [\n] {printf("\n");}
 .      {       printf("%s", yytext);}
 %%
-  int yywrap(void) {      return 1;  } 
-main(){yylex();}
+int yywrap(void) { return 1; } 
+int main(){ return yylex(); }

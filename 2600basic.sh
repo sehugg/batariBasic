@@ -5,7 +5,8 @@ echo "Starting build of $1"
 #Stella="/Path/To/Stella"
 bB=.
 BBPATH=./source
-VG="valgrind --track-origins=yes"
+#VG="valgrind --track-origins=yes"
+VG=""
 
 [ -f ~/.profile ] && source ~/.profile
 
@@ -13,7 +14,7 @@ $VG $BBPATH/preprocess < "$1" | $VG $BBPATH/2600basic -i "$bB" > bB.asm
 if [ "$?" -ne "0" ]
  then
   echo "Compilation failed."
-  exit
+  exit 1
 fi
 if [ "$2" = "-O" ]
   then
@@ -29,7 +30,7 @@ dasm "$1.asm" -I"$bB/includes" -f3 -o"$1.bin" | sed '/Label mismatch/d' \
 if [ "$?" -ne "0" ]
  then
   echo "Assembly failed."
-  exit
+  exit 2
 fi
 
 echo "Build complete."
@@ -37,5 +38,5 @@ echo "Build complete."
 [ -f "$z26" ] && "$z26" "$1.bin"
 [ -f "$Stella" ] && "$Stella" "$1.bin"
 
-exit
+exit 0
 

@@ -5,10 +5,10 @@ RM=rm
 #CFLAGS=-O2
 CFLAGS=-g
 CC=cc
-LEX=lex
+LEX=flex
 LEXFLAGS=-t
 
-all:            2600basic preprocess postprocess optimize
+all: 2600basic preprocess postprocess optimize
 
 2600basic: 2600bas.c statements.c keywords.c statements.h keywords.h
 	${CC} ${CFLAGS} -o 2600basic 2600bas.c statements.c keywords.c
@@ -26,7 +26,7 @@ optimize: optimize.lex
 	${CC} ${CFLAGS} -o optimize lex.yy.c
 	${RM} -f lex.yy.c
 
-install:        all
+install: all
 
 clean:
 	${RM} -f a.out core 2600basic preprocess postprocess

@@ -499,7 +499,7 @@ void newbank(int bankno)
   if (bankno == 1) return;  // "bank 1" is ignored
 
   fullpath[0]='\0';
-  if (includespath)
+  //if (includespath) // TODO: always true?
   {
     strcpy(fullpath,includespath);
     if ((includespath[strlen(includespath)-1]=='\\') || (includespath[strlen(includespath)-1]=='/'))
@@ -770,7 +770,7 @@ void create_includes(char *includesfile)
   if (includesfile_already_done) return;
   includesfile_already_done=1;
   fullpath[0]='\0';
-  if (includespath)
+  //if (includespath) // TODO: always true?
   {
     strcpy(fullpath,includespath);
     if ((includespath[strlen(includespath)-1]=='\\') || (includespath[strlen(includespath)-1]=='/'))
@@ -2228,8 +2228,9 @@ void doif(char **statement)
     if (!strncmp(statement[3],"<>\0",2)) bne(statement[6]);
     else if (statement[3][0] == '<') bcc(statement[6]);
     if (statement[3][0] == '>') bcs(statement[6]);
-    if (!strncmp(statement[3],"then\0",4)) 
+    if (!strncmp(statement[3],"then\0",4)) {
       if (not) beq(statement[4]); else bne(statement[4]);
+    }
 
   }
   else // then statement
@@ -2570,7 +2571,7 @@ printf("; complex statement detected\n");
       printf("\n");
       printf("	ORA #%d\n",1<<bit);//(int)pow(2,bit));
     }
-    else if (getbitvar=strtok(statement[4],"{"))
+    else if ((getbitvar=strtok(statement[4],"{")))
     {  // assign one bit to another
 	// I haven't a clue if this will actually work!
       if (getbitvar[0] == '!') 
