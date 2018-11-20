@@ -26,12 +26,11 @@ int main(int argc, char *argv[]) {
   switch (i) {
     case 'i':
         path=(char *)malloc(500);
-        path=optarg;
+        strcpy(path, optarg);
         break;
     case 'r':
         filename=(char *)malloc(100);
-        //strcpy(filename, optarg);
-        filename=optarg;
+        strcpy(filename, optarg);
         break;
     case '?':
         fprintf(stderr,"usage: %s -r <variable redefs file> -i <includes path>\n",argv[0]);
@@ -106,7 +105,7 @@ int main(int argc, char *argv[]) {
       }
 
     }
-    if (j>40) fprintf(stderr,"(%d) Warning: long line\n",getline());
+    if (j>40) fprintf(stderr,"(%d) Warning: long line\n",getlin());
     if (statement[0][0]=='\0')
     {
       sprintf(statement[0],"L0%d",unnamed++);

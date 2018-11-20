@@ -68,13 +68,14 @@ int main(int argc, char *argv[])
         }
       }
     }
-    while (fgets(asmline,500,asmfile))
+    //fprintf(stderr, "%d %p\n", bB, asmfile);
+    while (asmfile && fgets(asmline,500,asmfile))
     {
       if (!strncmp(asmline, "; bB.asm file is split here",20))
       {
 	writebBfile[bB]++;
 	readbBfile[bB]=(char **)malloc(sizeof(char *)*50000);
-	readbBfile[bB][writebBfile[bB]]=(char *)malloc(strlen(line)+2);
+	readbBfile[bB][writebBfile[bB]]=(char *)malloc(strlen(line)+3);
 	sprintf(readbBfile[bB][writebBfile[bB]],";%s\n",line);
       }
       if (!writebBfile[bB]) printf("%s",asmline);
@@ -84,7 +85,8 @@ int main(int argc, char *argv[])
 	sprintf(readbBfile[bB][writebBfile[bB]], "%s", asmline);
       }
     }
-    fclose(asmfile);
+    if (asmfile) fclose(asmfile);
+    asmfile = NULL;
     if (writebBfile[bB]) bB++;
     // if (writebBfile) fclose(bBfile);
   }

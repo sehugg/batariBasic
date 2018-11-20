@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include "statements.h"
 
 void keywords(char **cstatement)
 {
@@ -23,11 +24,11 @@ void keywords(char **cstatement)
   statement=(char**)malloc(sizeof(char*)*60);
   orstatement=(char **)malloc(sizeof(char*)*60);
   for (i=0;i<60;++i) {
-    orstatement[i]=(char*)malloc(sizeof(char)*60);
+    orstatement[i]=(char*)calloc(60,sizeof(char));
   }  
   elstatement=(char **)malloc(sizeof(char*)*60);
   for (i=0;i<60;++i) {
-    elstatement[i]=(char*)malloc(sizeof(char)*60);
+    elstatement[i]=(char*)calloc(60,sizeof(char));
   }  
 
 //for (i=0;i<10;++i)fprintf(stderr,"%s ",cstatement[i]);
@@ -211,7 +212,7 @@ void keywords(char **cstatement)
   for (i=0;i<50;++i)
   {
     statement[i]=cstatement[i];
-    if (statement[i][0]!='\0') if (statement[i][0]==':') colons++;
+    if (statement[i][0]==':') colons++;
 
 //printf("%s ",cstatement[i]);
   }

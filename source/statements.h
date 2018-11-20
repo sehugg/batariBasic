@@ -57,3 +57,37 @@ int isimmed(char *);
 int number(unsigned char);
 void header_open(FILE *);
 void header_write(FILE *, char *);
+int getlin();
+int linenum();
+int bbank();
+int bbs();
+void barf_sprite_data();
+void endfunction();
+void incline();
+int getlin();
+void invalidate_Areg();
+int getcondpart();
+int getindex(char *mystatement, char *myindex);
+void doasm();
+void doreboot();
+void vblank();
+void dopop();
+void drawscreen();
+void add_inline(char *myinclude);
+void newbank(int bankno);
+void sdata(char **statement);
+void data(char **statement);
+void pfclear(char **statement);
+int findpoint(char *item);
+void playfieldcolorandheight(char **statement);
+void playfield(char **statement);
+void lives(char **statement);
+
+
+
+
+
+
+
+
+

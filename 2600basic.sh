@@ -5,7 +5,7 @@ echo "Starting build of $1"
 #Stella="/Path/To/Stella"
 bB=.
 BBPATH=./source
-VG=valgrind
+VG="valgrind --track-origins=yes"
 
 [ -f ~/.profile ] && source ~/.profile
 

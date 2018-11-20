@@ -823,8 +823,8 @@ void create_includes(char *includesfile)
     if (writeline) 
     {
       if (!strncasecmp(line,"bb.asm\0",6)) 
-	if (user_includes[0] != '\0') fprintf(includeswrite,user_includes);
-      fprintf(includeswrite,line);
+	if (user_includes[0] != '\0') fputs(user_includes,includeswrite);
+      fputs(line,includeswrite);
     }
   }
   fclose(includesread);
@@ -1127,7 +1127,7 @@ void incline()
   line++;
 }
 
-int getline()
+int getlin()
 {
   return line;
 }
@@ -1243,7 +1243,7 @@ void data(char **statement)
   char **deallocdata_length;
   int i;
   data_length=(char **)malloc(sizeof(char *)*50);
-  for (i=0;i<50;++i) data_length[i]=(char*)malloc(sizeof(char)*50);
+  for (i=0;i<50;++i) data_length[i]=(char*)calloc(50,sizeof(char));
   deallocdata_length=data_length;
   removeCR(statement[2]);
 
@@ -1312,7 +1312,7 @@ void ongoto(char **statement)
   printf(".%sjumptablehi\n",statement[0]);
   while ((statement[i][0]!=':') && (statement[i][0]!='\0'))
   {
-    for (k=0;k<100;++k)
+    for (k=0;k<50;++k)
       if ((statement[i][k]==(unsigned char)0x0A) || (statement[i][k]==(unsigned char)0x0D))
 	statement[i][k]='\0';
     printf("	.byte >(.%s-1)\n",statement[i++]);
@@ -1321,7 +1321,7 @@ void ongoto(char **statement)
   i=4;
   while ((statement[i][0]!=':') && (statement[i][0]!='\0'))
   {
-    for (k=0;k<100;++k)
+    for (k=0;k<50;++k)
       if ((statement[i][k]==(unsigned char)0x0A) || (statement[i][k]==(unsigned char)0x0D))
 	statement[i][k]='\0';
     printf("	.byte <(.%s-1)\n",statement[i++]);
@@ -2321,9 +2321,9 @@ void displayoperation(char *opcode, char *operand, int index)
       printf("	TAY\n");
       printf("	PLA\n");
       printf("	TSX\n");
-      printf("	STY $00,x\n",opcode+1);
+      printf("	STY $00,x\n");
       printf("	SEC\n");
-      printf("	SBC $100,x\n",opcode+1);
+      printf("	SBC $100,x\n");
     }
     else if (opcode[0] == '/')
     {
@@ -2497,7 +2497,7 @@ printf("; complex statement detected\n");
       }
       else
       {
-        if ((rpn_statement[sp]=='\0') || (rpn_statement[sp+1]=='\0') || (rpn_statement[sp+2]=='\0'))
+        if ((rpn_statement[sp][0]=='\0') || (rpn_statement[sp+1][0]=='\0') || (rpn_statement[sp+2][0]=='\0'))
 	{
 	  // incomplete or unrecognized expression
 	  prerror("Cannot evaluate expression\n");
@@ -2758,7 +2758,7 @@ printf("; complex statement detected\n");
       if (statement[5][0] == '+')
       {
 	printf("	LDA %s\n",statement[2]);
-	printf("	CLC %s\n");
+	printf("	CLC\n");
 	printf("	ADC #16\n");
 	printf("	STA %s\n",statement[2]);
 	free(deallocstatement);
@@ -2767,7 +2767,7 @@ printf("; complex statement detected\n");
       if (statement[5][0] == '-')
       {
 	printf("	LDA %s\n",statement[2]);
-	printf("	SEC %s\n");
+	printf("	SEC\n");
 	printf("	SBC #16\n");
 	printf("	STA %s\n",statement[2]);
 	free(deallocstatement);

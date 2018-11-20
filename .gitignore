@@ -1,0 +1,12 @@
+*~
+*.exe
+*.bas.asm
+*.bas.bin
+2600basic_variable_redefs.h
+bB.asm
+includes.bB
+sed/
+source/2600basic
+source/optimize
+source/postprocess
+source/preprocess
