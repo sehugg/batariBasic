@@ -4,7 +4,7 @@ CP=cp
 RM=rm
 #CFLAGS=-O2
 CFLAGS=-g
-CC=cc
+#CC=cc
 LEX=flex
 LEXFLAGS=-t
 
@@ -29,7 +29,29 @@ optimize: optimize.lex
 install: all
 
 clean:
-	${RM} -f a.out core 2600basic preprocess postprocess
+	${RM} -f a.out core 2600basic preprocess postprocess *.js *.data *.metadata *.bc
 
 love:
 	@echo "not war"
+
+emscripten:
+	make clean
+	emmake make
+	mv 2600basic bb2600basic.bc
+	mv preprocess preprocess.bc
+	mv postprocess postprocess.bc
+	make bb2600basic.js preprocess.js postprocess.js
+
+%.js: %.bc fs2600basic.js
+	emcc -O2 --memory-init-file 0 \
+		-s WASM=0 \
+		-s MODULARIZE=1 \
+		-s EXPORT_NAME=\"'$*'\" \
+		-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["FS"]' \
+		-s FORCE_FILESYSTEM=1 \
+		$< -o $@ $(ARGS_$*)
+
+fs2600basic.js:
+	python $(EMSCRIPTEN)/tools/file_packager.py fs2600basic.data \
+	--preload ../includes \
+	--separate-metadata --js-output=$@

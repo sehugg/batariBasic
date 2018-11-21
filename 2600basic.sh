@@ -22,7 +22,7 @@ if [ "$2" = "-O" ]
   else
    $VG $BBPATH/postprocess -i "$bB" > "$1.asm"
 fi
-dasm "$1.asm" -I"$bB/includes" -f3 -o"$1.bin" | sed '/Label mismatch/d' \
+dasm "$1.asm" -I"$bB/includes" -f3 -l"$1.lst" -o"$1.bin" | sed '/Label mismatch/d' \
 | sed '/shakescreen/d;/rand16/d;/debugscore/d;/pfscore/d;/noscore/d;/vblank_bB_code/d;/PFcolorandheight/d;/pfrowheight/d;/pfres/d;/PFmaskvalue/d;/overscan_time/d;/vblank_time/d;/no_blank_lines/d;/superchip/d;/ROM2k/d;/NO_ILLEGAL_OPCODES/d;/minikernel/d;/debugcycles/d;/mincycles/d;/legacy/d;/PFcolors/d;/playercolors/d;/player1colors/d;/backgroundchange/d;/readpaddle/d;/multisprite/d;/PFheights/d;/bankswitch/d;/Unresolved Symbols/d' \
 | sed '2,/-->/!{ /-->/,/-->/d; }' \
 | sed 's/--> 0./Possible duplicate label: /'

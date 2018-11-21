@@ -19,4 +19,5 @@ sources:
 	
 clean:
 	cd source && make clean
-	rm -f samples/*.asm samples/*.bin
+	rm -f samples/*.asm samples/*.bin tests/*.asm tests/*.bin
+
