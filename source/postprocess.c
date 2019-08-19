@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
     {
       i=(int)(line[2])-48;
       for (j=1;j<writebBfile[i];++j)
-        printf("%s",readbBfile[i][j]);
+      printf("%s",readbBfile[i][j]);
+      continue; 
     }
     else
     {
@@ -67,6 +68,10 @@ int main(int argc, char *argv[])
           exit(1);
         }
       }
+      else if (strncmp(line,"bB\0",2))
+      {
+        fprintf(stderr,"User-defined %s found in current directory\n",line);
+      }
     }
     while (fgets(asmline,500,asmfile))
     {
@@ -74,13 +79,13 @@ int main(int argc, char *argv[])
       {
 	writebBfile[bB]++;
 	readbBfile[bB]=(char **)malloc(sizeof(char *)*50000);
-	readbBfile[bB][writebBfile[bB]]=(char *)malloc(strlen(line)+2);
+	readbBfile[bB][writebBfile[bB]]=(char *)malloc(strlen(line)+3);
 	sprintf(readbBfile[bB][writebBfile[bB]],";%s\n",line);
       }
       if (!writebBfile[bB]) printf("%s",asmline);
       else
       {
-	readbBfile[bB][++writebBfile[bB]]=(char *)malloc(strlen(asmline)+2);	
+	readbBfile[bB][++writebBfile[bB]]=(char *)malloc(strlen(asmline)+3);	
 	sprintf(readbBfile[bB][writebBfile[bB]], "%s", asmline);
       }
     }

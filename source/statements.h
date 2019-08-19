@@ -5,6 +5,7 @@
 #define _pfcolors 16
 #define _pfheights 32
 #define _background 64
+#define MAX_EXTRAS 5
 void printindex(char *, int);
 void loadindex(char *);
 void jsr(char *);
@@ -31,7 +32,8 @@ void divd(char **, int);
 void next(char **);
 void gosub(char **);
 void doif(char **);
-void let(char **);
+void dolet(char **);
+void dec(char **);
 void rem(char **);
 void set(char **);
 void dogoto(char **);
