@@ -1,4 +1,5 @@
 #include "keywords.h"
+#include "statements.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -330,6 +331,15 @@ void keywords(char **cstatement)
     else if (!strncmp(statement[1],"callmacro\0",10)) callmacro(statement);
     else if (!strncmp(statement[1],"extra\0",5)) doextra(statement[1]);
     else {
+         //sadly, a kludge for complex statements followed by "then label"
+         int lastc=strlen(statement[0])-1;
+         if( (lastc>3) && (
+            ((statement[0][lastc-4]>='0')&&(statement[0][lastc-4]<='9'))&&
+            (statement[0][lastc-3]=='t')&&
+            (statement[0][lastc-2]=='h')&&
+            (statement[0][lastc-1]=='e')&&
+            (statement[0][lastc-0]=='n') ))
+                return;
       sprintf(errorcode, "Error: Unknown keyword: %s\n", statement[1]);
       prerror(&errorcode[0]);
       exit(1);

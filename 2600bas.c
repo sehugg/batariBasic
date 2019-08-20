@@ -5,7 +5,7 @@
 #include "statements.h"
 #include "keywords.h"
 #include <math.h>
-#define BB_VERSION_INFO "batari Basic v1.01dreveng37 (C)2005-2014\n"
+#define BB_VERSION_INFO "batari Basic v1.01dreveng41 (C)2005-2017\n"
 
 int main(int argc, char *argv[]) {
   char **statement;
@@ -186,6 +186,15 @@ int main(int argc, char *argv[]) {
     {
       sprintf(statement[0],"L0%d",unnamed++);
     }
+    else
+    {
+      if(strchr(statement[0],'.')!=NULL)
+      {
+	    fprintf(stderr,"(%d) Invalid character in label.\n",bbgetline());
+	    exit(1);
+      }
+
+    }
     if (strncmp(statement[0],"end\0",3))
       printf(".%s ; %s\n",statement[0],displaycode); //    printf(".%s ; %s\n",statement[0],code);
     else doend();
@@ -208,7 +217,7 @@ int main(int argc, char *argv[]) {
   if (bs == 64) printf(" in bank 16");
   printf("\")\n");
   printf(" endif \n");
-  printf("ECHOFIRST = 1\n",bank-1);
+  printf("ECHOFIRST = 1\n");
   printf(" \n");
   printf(" \n");
   printf(" \n");

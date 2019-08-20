@@ -97,7 +97,7 @@ end
  scorecolor=30
  if switchreset then reboot
  if switchrightb then PF0=0 else PF0=63 
- COLUPF=(level * 16)^244
+ COLUPF=(level * 4 * 4)^244
  if gamebits{7} then gamerunning
  if !joy0fire then timer1=timer1+1
  if timer1=0 then nostartgame
@@ -108,7 +108,7 @@ gamerunning
  timer1=timer1+1:if timer1=0 then timer2=timer2+$10
  if timer2<$C0 then notendlevel
  temp1=level & $0F
- temp2=sc1*16+sc2/16
+ temp2=sc1*4*4+sc2/4/4
  temp1=level & $0F
  if temp2<gonextlevel[temp1] && timer1{5} then scorecolor=64
  if timer2<$F0 then notendlevel
@@ -117,7 +117,7 @@ notendlevel
  gosub movezombie
  if collcount<16 then skipcrashsound
  collcount=collcount-16
- AUDV0=collcount/16
+ AUDV0=collcount/4/4
  AUDC0=8
  if collcount{3} then AUDF0=(collcount&rand)/8 else AUDF0=17
  goto skipenginesound
@@ -320,7 +320,7 @@ wrap
  turndelay = turndelay + 1
  turndelay = turndelay & %11111011
  temp1=turndelay&3
- if temp1 <> 0 goto SameFrame
+ if temp1 <> 0 then goto SameFrame
 
 
  if joy0left then carpos=carpos-1:gamebits{0}=1
@@ -329,7 +329,7 @@ wrap
 
 driving rem read driving controller
  temp1=SWCHA & %00110000
- temp1=temp1/16
+ temp1=temp1/4/4
  on last goto d00 d01 d10 d11
 d00 on temp1 goto nomove left right nomove
 d01 on temp1 goto right nomove nomove left
@@ -534,7 +534,7 @@ doney
  if player1y<10 then zombiefinalyvel=(zombiefinalyvel^127)&127:zombieyvel=(zombieyvel^127)&127
  if player1x>200 then player1x=player1x+160
  if player1x>160 then player1x=player1x-160
- REFP1=zombiexvel/16
+ REFP1=zombiexvel/4/4
  return
 
  data gonextlevel

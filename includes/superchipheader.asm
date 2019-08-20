@@ -16,6 +16,10 @@
      ORG $1000
      RORG $1000
   endif
+  if bankswitch == 64
+     ORG $1000
+     RORG $1000
+  endif
  else
    ORG $F000
  endif

@@ -837,7 +837,7 @@ void newbank(int bankno)
 
   printf(" if ECHO%d\n",bank-1);
   printf(" echo \"    \",[(start_bank%d - *)]d , \"bytes of ROM space left in bank %d\")\n",bank-1,bank-1);
-  printf(" endif\n",bank-1);
+  printf(" endif\n");
   printf("ECHO%d = 1\n",bank-1);
 
 
@@ -2340,9 +2340,9 @@ void callmacro(char **statement)
       if ((statement[i][k]==(unsigned char)0x0A) || (statement[i][k]==(unsigned char)0x0D))
 	statement[i][k]='\0';
     if (isimmed(statement[i]))
-      printf(" #%s,",statement[i],i-2); // we're assuming the assembler doesn't mind extra commas!
+      printf(" #%s,",statement[i]); // we're assuming the assembler doesn't mind extra commas!
     else
-      printf(" %s,",statement[i],i-2); // we're assuming the assembler doesn't mind extra commas!
+      printf(" %s,",statement[i]); // we're assuming the assembler doesn't mind extra commas!
     i++;
   }
  printf("\n");
@@ -3435,9 +3435,9 @@ void displayoperation(char *opcode, char *operand, int index)
       printf("	TAY\n");
       printf("	PLA\n");
       printf("	TSX\n");
-      printf("	STY $00,x\n",opcode+1);
+      printf("	STY $00,x\n");
       printf("	SEC\n");
-      printf("	SBC $00,x\n",opcode+1);
+      printf("	SBC $00,x\n");
     }
     else if (opcode[0] == '/')
     {

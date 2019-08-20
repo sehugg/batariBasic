@@ -7,12 +7,11 @@
 ; header file
 2600basicheader.asm
 
+; standard startup routine.
+startup.asm
 
 ; standard kernel: two players, two missiles, a ball and an asymmetric playfield.
 std_kernel.asm
-
-; standard startup routine.
-startup.asm
 
 
 ; below are collections of subroutines and functions
