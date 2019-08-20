@@ -18,8 +18,9 @@ clearmem
  pha
  bne clearmem
  sty temp1
+ ifnconst multisprite
  ifconst pfrowheight
- lda pfrowheight
+ lda #pfrowheight
  else
  ifconst pfres
  lda #(96/pfres)
@@ -28,6 +29,7 @@ clearmem
  endif
  endif
  sta playfieldpos
+ endif
  ldx #5
 initscore
  lda #<scoretable

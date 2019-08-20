@@ -1,16 +1,40 @@
-#!/bin/bash
+#!/bin/sh
+
+# do some quick sanity checking...
+
+if [ ! "$bB" ] ; then
+  echo "### WARNING: the bB envionronment variable isn't set."
+fi
+
+OSTYPE=$(uname -s)
+ARCH=$(uname -m)
+for EXT in "" .$OSTYPE.x86 .$OSTYPE.$ARCH .$OSTYPE ; do
+  echo | preprocess$EXT 2>/dev/null >&2 && break
+done
+
+echo | preprocess$EXT 2>/dev/null >&2 && break
+if [ ! $? = 0 ] ; then
+  echo "### ERROR: couldn't find bB binaries for $OSTYPE($ARCH). Exiting."
+  exit 1
+fi
+
+#do dasm separately, because it's distributed separately
+for DASMEXT in "" .$OSTYPE.x86 .$OSTYPE.$ARCH .$OSTYPE ; do
+  dasm$DASMEXT 2>/dev/null >&2 
+  [ $? = 1 ] && break
+done
+dasm$DASMEXT 2>/dev/null >&2 
+if [ ! $? = 1 ] ; then
+  echo "### ERROR: couldn't find dasm binary for $OSTYPE($ARCH). Exiting."
+  exit 1
+fi
+
+DV=$(dasm$DASMEXT 2>/dev/null | grep ^DASM | head -n1)
+echo "Found dasm version: $DV"
+  
 echo "Starting build of $1"
-
-#z26="/Path/To/z26"
-#Stella="/Path/To/Stella"
-bB=.
-BBPATH=./source
-#VG="valgrind --track-origins=yes"
-VG=""
-
-[ -f ~/.profile ] && source ~/.profile
-
-$VG $BBPATH/preprocess < "$1" | $VG $BBPATH/2600basic -i "$bB" > bB.asm
+preprocess$EXT<$1 | 2600basic$EXT -i "$bB" >bB.asm
+#preprocess$EXT<$1 | valgrind --leak-check=yes 2600basic$EXT -i "$bB" >bB.asm
 if [ "$?" -ne "0" ]
  then
   echo "Compilation failed."
@@ -18,21 +42,16 @@ if [ "$?" -ne "0" ]
 fi
 if [ "$2" = "-O" ]
   then
-   $VG $BBPATH/postprocess -i "$bB" | $VG $BBPATH/optimize > "$1.asm"
+   postprocess$EXT -i "$bB" | optimize$EXT>$1.asm
   else
-   $VG $BBPATH/postprocess -i "$bB" > "$1.asm"
+   postprocess$EXT -i "$bB" >$1.asm
 fi
-dasm "$1.asm" -I"$bB/includes" -f3 -l"$1.lst" -o"$1.bin" | sed '/Label mismatch/d' \
-| sed '/shakescreen/d;/rand16/d;/debugscore/d;/pfscore/d;/noscore/d;/vblank_bB_code/d;/PFcolorandheight/d;/pfrowheight/d;/pfres/d;/PFmaskvalue/d;/overscan_time/d;/vblank_time/d;/no_blank_lines/d;/superchip/d;/ROM2k/d;/NO_ILLEGAL_OPCODES/d;/minikernel/d;/debugcycles/d;/mincycles/d;/legacy/d;/PFcolors/d;/playercolors/d;/player1colors/d;/backgroundchange/d;/readpaddle/d;/multisprite/d;/PFheights/d;/bankswitch/d;/Unresolved Symbols/d' \
-| sed '2,/-->/!{ /-->/,/-->/d; }' \
-| sed 's/--> 0./Possible duplicate label: /'
-
+dasm$DASMEXT $1.asm -I"$bB/includes" -f3 -l$1.lst -s$1.sym -o$1.bin | bbfilter$EXT
 if [ "$?" -ne "0" ]
  then
   echo "Assembly failed."
   exit 2
 fi
-
 echo "Build complete."
 
 [ -f "$z26" ] && "$z26" "$1.bin"

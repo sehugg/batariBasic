@@ -5,6 +5,50 @@
 #define _pfcolors 16
 #define _pfheights 32
 #define _background 64
+#define MAX_EXTRAS 5
+
+#include <stdio.h>
+
+void doextra(char *);
+void callmacro(char **);
+void do_stack(char **);
+void do_pull(char **);
+void do_push(char **);
+void domacro(char **);
+void lives(char **);
+void scorecolors(char **);
+void playfield(char **);
+void bkcolors(char **);
+void playfieldcolorandheight(char **);
+void vblank();
+void doreboot();
+void dopop();
+void doasm();
+void pfclear(char **);
+void data(char **);
+void sdata(char **);
+void newbank(int);
+void dogoto(char **);
+void doif(char **);
+void function(char **);
+void add_inline(char *);
+void add_includes(char *);
+void create_includes(char *);
+void endfunction();
+void invalidate_Areg();
+int getcondpart();
+int linenum();
+int islabel(char **);
+int islabelelse(char **);
+void compressdata(char **, int, int);
+void shiftdata(char **, int);
+int findpoint(char *);
+int getindex(char *, char *);
+int bbgetline();
+void doend();
+int bbank();
+int bbs();
+void barf_sprite_data();
 void printindex(char *, int);
 void loadindex(char *);
 void jsr(char *);
@@ -31,7 +75,8 @@ void divd(char **, int);
 void next(char **);
 void gosub(char **);
 void doif(char **);
-void let(char **);
+void dolet(char **);
+void dec(char **);
 void rem(char **);
 void set(char **);
 void dogoto(char **);

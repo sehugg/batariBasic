@@ -10,3 +10,6 @@ source/2600basic
 source/optimize
 source/postprocess
 source/preprocess
+*.dSYM/
+*.lst
+*.bin
